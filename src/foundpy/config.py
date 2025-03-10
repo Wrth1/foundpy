@@ -72,7 +72,7 @@ class Config():
             for _ in trange(d):
                 x = pow(x, EXP, MOD)
                 x ^= 1
-            x_bytes = int.to_bytes(x, (x.bit_length()+7)//8)
+            x_bytes = int.to_bytes(x, (x.bit_length()+7)//8, byteorder="big")
             print("PoW done")
             solution = f"{VERSION}.{base64.standard_b64encode(x_bytes).decode()}"
 
