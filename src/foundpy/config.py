@@ -62,7 +62,7 @@ class Config():
 
         if response.status_code == 200:
             print("session already found, skipping PoW...")
-            response = session.get(self.tcp1p_url + "/launch")
+            response = session.post(self.tcp1p_url + "/launch")
             resp_json = response.json()
         else:
             response = session.get(self.tcp1p_url + "/challenge")
