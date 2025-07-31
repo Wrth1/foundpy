@@ -108,7 +108,7 @@ class Config():
             rpc_url=rpc_endpoint,
             privkey=private_key
         )
-        self.flag = lambda: session.get(self.tcp1p_url + "/flag").json()['message']
+        self.flag = lambda: session.get(self.tcp1p_url + "/flag").json()
         return {"rpc_endpoint": rpc_endpoint, "private_key": private_key, "setup_contract": setup_contract, "wallet": wallet, "message": message, "ws_url": ws_url}
 
     def from_htb(self, address, restart=False):
