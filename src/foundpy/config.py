@@ -55,7 +55,8 @@ class Config():
         EXP = 2 ** 1277
 
         self.tcp1p_url = address
-        response = session.get(self.tcp1p_url + "/kill")
+        response = session.post(self.tcp1p_url + "/kill")
+
         if response.status_code == 200:
             print("session already found, skipping PoW...")
             response = session.get(self.tcp1p_url + "/launch")
@@ -78,19 +79,22 @@ class Config():
             solution = f"{VERSION}.{base64.standard_b64encode(x_bytes).decode()}"
 
             response = session.post(self.tcp1p_url + "/solution", json={"solution": solution})
-            response = session.get(self.tcp1p_url + "/launch")
+            response = session.post(self.tcp1p_url + "/launch")
             resp_json = response.json()
-            
-        resp_json['1']['RPC Endpoint'] = resp_json['1']['RPC Endpoint'].replace('{ORIGIN}', self.tcp1p_url)
+        data = {}
+        for key, value in resp_json.items():
+            if isinstance(value, dict):
+                for k, v in value.items():
+                    data[k] = v.replace('{ORIGIN}', self.tcp1p_url)
+            else:
+                data[key] = value
+        rpc_endpoint = data['RPC_URL']
+        private_key = data['PRIVKEY']
+        setup_contract = data['SETUP_CONTRACT_ADDR']
+        wallet = data['WALLET_ADDR']
+        ws_url = data['WS_URL']
+        message = data['message']
 
-        uuid = resp_json['0']['UUID']
-        rpc_endpoint = resp_json['1']['RPC Endpoint']
-        private_key = resp_json['2']['Private Key']
-        setup_contract = resp_json['3']['Setup Contract']
-        wallet = resp_json['4']['Wallet']
-        message = resp_json['message']
-
-        print(f"UUID: {uuid}")
         print(f"RPC Endpoint: {rpc_endpoint}")
         print(f"Private Key: {private_key}")
         print(f"Setup Contract: {setup_contract}")
@@ -102,7 +106,7 @@ class Config():
             privkey=private_key
         )
         self.flag = lambda: session.get(self.tcp1p_url + "/flag").json()['message']
-        return {"uuid": uuid, "rpc_endpoint": rpc_endpoint, "private_key": private_key, "setup_contract": setup_contract, "wallet": wallet, "message": message}
+        return {"rpc_endpoint": rpc_endpoint, "private_key": private_key, "setup_contract": setup_contract, "wallet": wallet, "message": message, "ws_url": ws_url}
 
     def from_htb(self, address, restart=False):
         import time
