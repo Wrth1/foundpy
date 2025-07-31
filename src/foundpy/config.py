@@ -1,6 +1,7 @@
 import solcx
 from web3 import Web3, HTTPProvider
 from eth_abi import encode as encode_abi
+from eth_abi.packed import encode_packed
 
 is_warned = False
 
