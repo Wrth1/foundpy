@@ -4,6 +4,9 @@ from eth_abi import encode as encode_abi
 from eth_abi.packed import encode_packed
 
 is_warned = False
+DEFAULT_REMAPPINGS = {
+    "@openzeppelin": "node_modules/openzeppelin",
+}
 
 class Config():
     def __init__(self) -> None:

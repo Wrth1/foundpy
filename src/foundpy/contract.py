@@ -24,7 +24,7 @@ class Account:
 
 @check_setup_on_create
 class Contract:
-    def __init__(self, addr, file=None, abi=None, import_remappings={}) -> None:
+    def __init__(self, addr, file=None, abi=None, import_remappings=DEFAULT_REMAPPINGS) -> None:
         addr = Web3.to_checksum_address(addr)
         self.file = file
         self.address = addr
@@ -129,12 +129,12 @@ class Contract:
 
     
     @classmethod
-    def deploy_contract(cls, file, *args, value=0, import_remappings={}):
+    def deploy_contract(cls, file, *args, value=0, import_remappings=DEFAULT_REMAPPINGS):
         contract = deploy_contract(file, *args, value=value, import_remappings=import_remappings)
         return cls(contract.address, file=contract.file, abi=contract.abi, import_remappings=contract.import_remappings)
 
 @call_check_setup
-def deploy_contract(file, *args, value=0, import_remappings={}):
+def deploy_contract(file, *args, value=0, import_remappings=DEFAULT_REMAPPINGS):
     compiled_sol = compile_file(file, import_remappings)
     abi = compiled_sol['abi']
     bytecode = compiled_sol['bin']

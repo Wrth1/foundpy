@@ -1,7 +1,7 @@
 import re
 from .config import *
 
-def compile_file(filename, import_remappings={}):
+def compile_file(filename, import_remappings=DEFAULT_REMAPPINGS):
     splittedfile = filename.split(":")
     if len(splittedfile) > 1:
         filename = splittedfile[0]
