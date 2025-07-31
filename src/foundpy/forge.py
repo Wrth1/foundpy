@@ -12,6 +12,6 @@ class Forge():
         return None
     
     @call_check_setup
-    def create(self, file, *args, value=0):
-        deployed = deploy_contract(file, *args, value=value).address
+    def create(self, file, *args, value=0, import_remappings=DEFAULT_REMAPPINGS):
+        deployed = deploy_contract(file, *args, value=value, import_remappings=import_remappings).address
         return deployed
